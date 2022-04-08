@@ -9,7 +9,15 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 public class Ingrediente implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -28,41 +36,10 @@ public class Ingrediente implements Serializable {
     // @ManyToOne
     // private Pizza pizza;
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-
-    public Ingrediente() {
-    }
-
-    public Ingrediente(long id, String nombre, double precio) {
-        this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
+    // Lo creo aqui porque con @getter NO ME LO RECONOCE al necesitarlo
+    // antes de la ejecución en Pizza (calculo de precio)
     public double getPrecio() {
         return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
     }
 
 }

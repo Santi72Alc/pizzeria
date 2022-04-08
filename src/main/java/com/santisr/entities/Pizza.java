@@ -11,7 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 public class Pizza implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -29,16 +37,6 @@ public class Pizza implements Serializable {
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "pizza")
     private List<Comentario> comentarios;
 
-    public Pizza() {
-        super();
-    }
-
-    public Pizza(long id, List<Ingrediente> ingredientes, List<Comentario> comentarios) {
-        super();
-        this.id = id;
-        this.ingredientes = ingredientes;
-        this.comentarios = comentarios;
-    }
 
     private double getPrecioIngredientes() {
         double precioIngredientes = 0;
@@ -50,34 +48,6 @@ public class Pizza implements Serializable {
 
     public double getPrecio() {
         return getPrecioIngredientes() * COMISION;
-    }
-
-    public double getCOMISION() {
-        return COMISION;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public List<Ingrediente> getIngredientes() {
-        return ingredientes;
-    }
-
-    public void setIngredientes(List<Ingrediente> ingredientes) {
-        this.ingredientes = ingredientes;
-    }
-
-    public List<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(List<Comentario> comentarios) {
-        this.comentarios = comentarios;
     }
 
 }

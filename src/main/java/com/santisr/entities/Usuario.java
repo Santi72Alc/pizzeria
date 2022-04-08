@@ -16,7 +16,15 @@ import javax.validation.constraints.NotBlank;
 
 import com.santisr.constants.Role;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
 
