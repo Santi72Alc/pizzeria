@@ -30,4 +30,14 @@ public class PizzaImpl implements IPizza {
         return connDao.findById(id);
     }
 
+    @Override
+    public void delete(long id) {
+       connDao.deleteById(id);
+    }
+
+    @Override
+    public Pizza save(Pizza pizza) {
+        return connDao.save(pizza);
+    }
+
 }

@@ -15,4 +15,8 @@ public interface IIngrediente {
 
     public Optional<Ingrediente> findById(long id);
 
+    public void delete(long id);
+
+    public Ingrediente save(Ingrediente ingrediente);
+
 }
