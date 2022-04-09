@@ -24,6 +24,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -95,6 +96,43 @@ public class PizzaController {
         }
         return responseEntity;
     }
+
+
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> addIngrediente(
+            @Valid @RequestBody(required = true) Pizza pizza,
+            BindingResult result) {
+
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        Map<String, Object> responseAsMap = new HashMap<>();
+
+        if (result.hasErrors() || pizza.getId() > 0) {
+            // Se ha encontrado algún error en la validación puesta en la clase
+            List<String> errores = new ArrayList<>();
+            if (pizza.getId() > 0)
+                errores.add("The new record must'n has Id value'");
+            for (ObjectError error : result.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+            responseAsMap.put("errors", errores);
+            responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+
+        } else {
+            // LOS DATOS RECIBIDOS ESTÁN BIEN, Intentamos la actualización
+            try {
+                // El registro no EXISTE y lo grabamos
+                responseAsMap.put("body", pizzaService.save(pizza));
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+
+            } catch (DataAccessException e) {
+                // Error NO controlado
+                responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return responseEntity;
+    }
+
 
     @PutMapping
     public ResponseEntity<Map<String, Object>> updatePizza(@Valid @RequestBody(required = true) Pizza pizza,
