@@ -12,9 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PizzaImpl implements IPizza {
-
     @Autowired
-    IPizzaDao connDao;
+    private IPizzaDao connDao;
 
     @Override
     public List<Pizza> findAll() {

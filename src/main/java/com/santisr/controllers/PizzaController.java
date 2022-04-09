@@ -13,6 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -56,6 +57,9 @@ public class PizzaController {
         return responseEntity;
     }
 
+    // Mapping que devuelve Un registro de pizza
+    // Se indica el 'id' del registroa obtener mediante el parametro
+    // en la URI ( ej.: http://localhost:8080/pizzas/3 )
     @GetMapping("/{id}")
     public ResponseEntity<Pizza> getPizzaById(
             @PathVariable(name = "id", required = true) Long idProducto) {
@@ -83,5 +87,33 @@ public class PizzaController {
         }
         return responseEntity;
     }
+
+    // @DeleteMapping("/delete/{id}")
+    // public ResponseEntity<Void> deletePizza(
+    //         @PathVariable(name = "id", required = true) Long idProducto) {
+
+    //     ResponseEntity<Void> responseEntity = null;
+    //     Pizza pizza = null;
+
+    //     try {
+    //         // // Buscamos si el código de registro recibido existe
+    //         pizza = pizzaService.existById();
+
+    //         if (pizza != null)
+    //             // Encontramos el registro a devolver
+    //             responseEntity = null;
+    //         else
+    //             // NO se ha encontrado el registro
+    //             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    //     } catch (NumberFormatException e) {
+    //         // El error se produce al reibir el código del registro a buscar
+    //         responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    //     } catch (DataAccessException e) {
+    //         // Error NO controlado
+    //         responseEntity = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    //     return responseEntity;
+    // }
 
 }

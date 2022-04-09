@@ -22,4 +22,5 @@ public interface IPizzaDao extends JpaRepository<Pizza, Long> {
     // // @Query( value = "select p from pizza p left join fetch p.comentarios, p.ingredientes where id = :id")
     @Query( value = "select p from Pizza p where id = :id")
     public Optional<Pizza> findById(long id);
+    
 }

@@ -14,5 +14,4 @@ public interface IPizza {
     public List<Pizza> findAll(Sort sort);
 
     public Optional<Pizza> findById(long id);
-
 }

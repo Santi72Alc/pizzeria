@@ -14,4 +14,5 @@ public interface IIngrediente {
     public List<Ingrediente> findAll(Sort sort);
 
     public Optional<Ingrediente> findById(long id);
+
 }

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class IngredienteImpl implements IIngrediente {
-
     @Autowired
     private IIngredienteDao connDao;
 
@@ -30,6 +29,5 @@ public class IngredienteImpl implements IIngrediente {
     public Optional<Ingrediente> findById(long id) {
         return connDao.findById(id);
     }
-
 
 }
