@@ -1,6 +1,7 @@
 package com.santisr.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.santisr.entities.Pizza;
 
@@ -12,6 +13,6 @@ public interface IPizza {
 
     public List<Pizza> findAll(Sort sort);
 
-    public Pizza findById(long id);
+    public Optional<Pizza> findById(long id);
 
 }
