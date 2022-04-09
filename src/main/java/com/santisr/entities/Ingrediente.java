@@ -17,7 +17,8 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class Ingrediente implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -33,13 +34,21 @@ public class Ingrediente implements Serializable {
 
     // Creo que no hace falta referenciar la pizza en el ingrediente porque
     // no depende de que esté o no en ninguna pizza
-    // @ManyToOne
+    // @ManyToOne(cascade = CascadeType.PERSIST)
     // private Pizza pizza;
 
     // Lo creo aqui porque con @getter NO ME LO RECONOCE al necesitarlo
     // antes de la ejecución en Pizza (calculo de precio)
     public double getPrecio() {
         return precio;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 }

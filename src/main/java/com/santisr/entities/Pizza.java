@@ -11,32 +11,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.santisr.constants.Importes;
+
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
 public class Pizza implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    private final double COMISION = 1.20;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String nombre;
+
     // Para poder tener el indice secundario con la tabla ingredientes
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Ingrediente> ingredientes;
 
     // Para poder tener el indice secundario con la tabla comentarios
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "pizza")
+    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY, mappedBy = "pizza")
     private List<Comentario> comentarios;
-
 
     private double getPrecioIngredientes() {
         double precioIngredientes = 0;
@@ -47,7 +45,41 @@ public class Pizza implements Serializable {
     }
 
     public double getPrecio() {
-        return getPrecioIngredientes() * COMISION;
+        return getPrecioIngredientes() * Importes.COMISION;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public List<Ingrediente> getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes = ingredientes;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    
 
 }
