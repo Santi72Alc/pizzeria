@@ -14,4 +14,9 @@ public interface IIngrediente {
     public List<Ingrediente> findAll(Sort sort);
 
     public Optional<Ingrediente> findById(long id);
+
+    public void delete(long id);
+
+    public Ingrediente save(Ingrediente ingrediente);
+
 }

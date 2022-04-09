@@ -31,5 +31,14 @@ public class IngredienteImpl implements IIngrediente {
         return connDao.findById(id);
     }
 
+    @Override
+    public void delete(long id) {
+        connDao.deleteById(id);
+    }
+
+    @Override
+    public Ingrediente save(Ingrediente ingrediente) {
+        return connDao.save(ingrediente);
+    }
 
 }

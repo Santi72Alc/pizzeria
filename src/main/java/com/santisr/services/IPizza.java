@@ -15,4 +15,8 @@ public interface IPizza {
 
     public Optional<Pizza> findById(long id);
 
+    public void delete(long id);
+
+    public Pizza save(Pizza pizza);
+
 }

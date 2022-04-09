@@ -1,6 +1,7 @@
 package com.santisr.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,7 +31,8 @@ public class Pizza implements Serializable {
     private String nombre;
 
     // Para poder tener el indice secundario con la tabla ingredientes
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+            CascadeType.REFRESH }, fetch = FetchType.EAGER)
     private List<Ingrediente> ingredientes;
 
     // Para poder tener el indice secundario con la tabla comentarios
@@ -78,9 +80,19 @@ public class Pizza implements Serializable {
     }
 
     public void setComentarios(List<Comentario> comentarios) {
+        if (comentarios == null)
+            comentarios = new ArrayList<>();
         this.comentarios = comentarios;
     }
 
-    
+    public void addIngrediente(Ingrediente ingrediente) {
+        if (ingredientes == null)
+            ingredientes = new ArrayList<>();
+        ingredientes.add(ingrediente);
+    }
+
+    public boolean removeIngrediente(Ingrediente ingrediente) {
+        return ingredientes.remove(ingrediente);
+    }
 
 }
