@@ -1,6 +1,7 @@
 package com.santisr.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.santisr.dao.IPizzaDao;
 import com.santisr.entities.Pizza;
@@ -22,12 +23,12 @@ public class PizzaImpl implements IPizza {
 
     @Override
     public List<Pizza> findAll(Sort sort) {
-        return null;
+        return connDao.findAll(sort);
     }
 
     @Override
-    public Pizza findById(long id) {
-        return null;
+    public Optional<Pizza> findById(long id) {
+        return connDao.findById(id);
     }
 
 }
