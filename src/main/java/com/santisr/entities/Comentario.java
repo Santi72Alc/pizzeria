@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,11 +33,11 @@ public class Comentario implements Serializable {
     private LocalDateTime fecha;
 
     @NotNull(message = "Comment's usuario is required")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Usuario usuario;
 
     @NotNull(message = "Comment's pizza is required")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Pizza pizza;
 
     @Size(min = 0, max = 5, message = "Comment's score value must to be between 0 and 5")
