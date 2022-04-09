@@ -35,7 +35,7 @@ public class Ingrediente implements Serializable {
     // Creo que no hace falta referenciar la pizza en el ingrediente porque
     // no depende de que esté o no en ninguna pizza
     // @ManyToOne(cascade = CascadeType.PERSIST)
-    // private Pizza pizza;
+    // private List<Pizza> pizzas;
 
     // Lo creo aqui porque con @getter NO ME LO RECONOCE al necesitarlo
     // antes de la ejecución en Pizza (calculo de precio)

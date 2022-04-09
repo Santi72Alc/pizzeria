@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.santisr.constants.Importes;
@@ -29,11 +30,11 @@ public class Pizza implements Serializable {
     private String nombre;
 
     // Para poder tener el indice secundario con la tabla ingredientes
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Ingrediente> ingredientes;
 
     // Para poder tener el indice secundario con la tabla comentarios
-    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY, mappedBy = "pizza")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "pizza")
     private List<Comentario> comentarios;
 
     private double getPrecioIngredientes() {
