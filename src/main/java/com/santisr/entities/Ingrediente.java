@@ -9,12 +9,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 public class Ingrediente implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -27,6 +22,20 @@ public class Ingrediente implements Serializable {
 
     @PositiveOrZero(message = "Ingredient's price can't be negative")
     private double precio;
+
+    public Ingrediente() {
+    }
+
+    public Ingrediente(String nombre, double precio) {
+        this.nombre = nombre;
+        this.precio = precio;
+    }
+
+    public Ingrediente(long id, String nombre, double precio) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+    }
 
     // Lo creo aqui porque con @getter NO ME LO RECONOCE al necesitarlo
     // antes de la ejecución en Pizza (calculo de precio)
