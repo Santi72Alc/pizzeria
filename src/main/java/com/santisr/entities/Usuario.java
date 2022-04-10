@@ -5,29 +5,19 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.santisr.constants.Role;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter @Setter
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,36 +27,55 @@ public class Usuario implements Serializable {
     private String nombre;
 
     private String apellidos;
-    private String fotoPath;
-
-    @NotBlank
-    @Min(value = 4, message = "User's password must be greater than 4ch")
-    private String password;
 
     @Email(message = "User's email has a wrong format")
-    @NotBlank(message = "User's email is required")
     private String email;
+
+    private String foto;
+
+    @Size(min = 4, max = 10, message = "User's password must to have between 4 and 10 characters")
+    private String password;
 
     private Role role;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "usuario")
     private List<Comentario> comentarios;
 
+    /* CONSTRUCTORES */
     public Usuario() {
     }
 
-    public Usuario(long id, String nombre, String apellidos,
-            String fotoPath, String password, String email,
-            Role role, List<Comentario> comentarios) {
+    public Usuario(long id, String nombre, String apellidos, String email, String foto, String password, Role role,
+            List<Comentario> comentarios) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
-        this.fotoPath = fotoPath;
-        this.password = password;
         this.email = email;
+        this.foto = foto;
+        this.password = password;
         this.role = role;
         this.comentarios = comentarios;
     }
+    public Usuario(String nombre, String apellidos, String email, String password,
+            Role role) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Usuario(String nombre, String apellidos, String email, String foto, String password,
+            Role role) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.foto = foto;
+        this.password = password;
+        this.role = role;
+    }
+
+    /* METODOS */
 
     public long getId() {
         return id;
@@ -92,12 +101,12 @@ public class Usuario implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public String getFotoPath() {
-        return fotoPath;
+    public String getFoto() {
+        return foto;
     }
 
-    public void setFotoPath(String fotoPath) {
-        this.fotoPath = fotoPath;
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public String getPassword() {

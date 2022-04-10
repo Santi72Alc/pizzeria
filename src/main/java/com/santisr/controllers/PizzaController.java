@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PizzaController {
 
     @Autowired
-    IPizza pizzaService;
+    private IPizza pizzaService;
 
     // Mapping que devuelve TODOS los registros de pizzas
     // Se puede recibir el parámetro 'sort' {true|false} para recibir
@@ -99,7 +99,7 @@ public class PizzaController {
 
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> addIngrediente(
+    public ResponseEntity<Map<String, Object>> addPizza(
             @Valid @RequestBody(required = true) Pizza pizza,
             BindingResult result) {
 

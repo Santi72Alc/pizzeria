@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 import com.santisr.constants.Importes;
 
@@ -28,11 +29,13 @@ public class Pizza implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Pizza's name is required")
     private String nombre;
 
+    private String foto;
+
     // Para poder tener el indice secundario con la tabla ingredientes
-    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-            CascadeType.REFRESH }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Ingrediente> ingredientes;
 
     // Para poder tener el indice secundario con la tabla comentarios
@@ -77,6 +80,14 @@ public class Pizza implements Serializable {
 
     public List<Comentario> getComentarios() {
         return comentarios;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public void setComentarios(List<Comentario> comentarios) {

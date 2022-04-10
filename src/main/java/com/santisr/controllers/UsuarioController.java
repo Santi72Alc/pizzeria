@@ -1,18 +1,17 @@
 package com.santisr.controllers;
 
-import com.santisr.entities.Ingrediente;
-import com.santisr.services.IIngrediente;
-
-import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.santisr.entities.Usuario;
+import com.santisr.services.IUsuario;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,29 +28,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/ingredientes")
-public class IngredienteController {
+@RequestMapping("/usuarios")
+public class UsuarioController {
 
     @Autowired
-    private IIngrediente ingredienteService;
+    private IUsuario usuarioService;
 
     @GetMapping
-    public ResponseEntity<List<Ingrediente>> getAllIngredientes(
+    public ResponseEntity<List<Usuario>> getAllUsuarios(
             @RequestParam(name = "sort", defaultValue = "false", required = false) String sort) {
 
-        ResponseEntity<List<Ingrediente>> responseEntity = null;
-        List<Ingrediente> listaIngredientes = null;
+        ResponseEntity<List<Usuario>> responseEntity = null;
+        List<Usuario> listaUsuarios = null;
 
         try {
             // Solicitamos TODOS los valores
             if (Boolean.parseBoolean(sort))
-                listaIngredientes = ingredienteService.findAll(Sort.by("nombre"));
+                listaUsuarios = usuarioService.findAll(Sort.by("nombre"));
             else
-                listaIngredientes = ingredienteService.findAll();
+                listaUsuarios = usuarioService.findAll();
 
-            if (listaIngredientes != null && !listaIngredientes.isEmpty())
+            if (listaUsuarios != null && !listaUsuarios.isEmpty())
                 // Encontramos valores para devolver (NO HAY REGISTROS)
-                responseEntity = new ResponseEntity<>(listaIngredientes, HttpStatus.OK);
+                responseEntity = new ResponseEntity<>(listaUsuarios, HttpStatus.OK);
             else
                 // NO hay nada que devolver
                 responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -63,20 +62,23 @@ public class IngredienteController {
         return responseEntity;
     }
 
+    // Mapping que devuelve Un registro de usuario
+    // Se indica el 'id' del registro a obtener mediante el parametro
+    // en la URI ( ej.: http://localhost:8080/usuarios/3 )
     @GetMapping("/{id}")
-    public ResponseEntity<Ingrediente> getIngredienteById(
-            @PathVariable(name = "id", required = true) Long idProducto) {
+    public ResponseEntity<Usuario> getUserId(
+            @PathVariable(name = "id", required = true) Long idUsuario) {
 
-        ResponseEntity<Ingrediente> responseEntity = null;
-        Ingrediente ingrediente = null;
+        ResponseEntity<Usuario> responseEntity = null;
+        Usuario usuario = null;
 
         try {
             // Buscamos si el código de registro recibido existe
-            ingrediente = ingredienteService.findById(idProducto).orElse(null);
+            usuario = usuarioService.findById(idUsuario).orElse(null);
 
-            if (ingrediente != null)
+            if (usuario != null)
                 // Encontramos el registro a devolver
-                responseEntity = new ResponseEntity<>(ingrediente, HttpStatus.OK);
+                responseEntity = new ResponseEntity<>(usuario, HttpStatus.OK);
             else
                 // NO se ha encontrado el registro
                 responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,18 +94,18 @@ public class IngredienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> addIngrediente(
-            @Valid @RequestBody(required = true) Ingrediente ingrediente,
+    public ResponseEntity<Map<String, Object>> addUsuario(
+            @Valid @RequestBody(required = true) Usuario usuario,
             BindingResult result) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Map<String, Object> responseAsMap = new HashMap<>();
 
-        if (result.hasErrors() || ingrediente.getId() > 0) {
+        if (result.hasErrors() || usuario.getId() > 0) {
             // Se ha encontrado algún error en la validación puesta en la clase
             List<String> errores = new ArrayList<>();
-            if (ingrediente.getId() > 0)
-                errores.add("The new record must'n has Id value'");
+            if (usuario.getId() > 0)
+                errores.add("The new record already has Id value'");
             for (ObjectError error : result.getAllErrors()) {
                 errores.add(error.getDefaultMessage());
             }
@@ -114,7 +116,7 @@ public class IngredienteController {
             // LOS DATOS RECIBIDOS ESTÁN BIEN, Intentamos la actualización
             try {
                 // El registro no EXISTE y lo grabamos
-                responseAsMap.put("body", ingredienteService.save(ingrediente));
+                responseAsMap.put("body", usuarioService.save(usuario));
                 responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
 
             } catch (DataAccessException e) {
@@ -126,9 +128,9 @@ public class IngredienteController {
         return responseEntity;
     }
 
+
     @PutMapping
-    public ResponseEntity<Map<String, Object>> updateIngrediente(
-            @Valid @RequestBody(required = true) Ingrediente ingrediente,
+    public ResponseEntity<Map<String, Object>> updateUsuario(@Valid @RequestBody(required = true) Usuario usuario,
             BindingResult result) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
@@ -146,14 +148,14 @@ public class IngredienteController {
         } else {
             // LOS DATOS RECIBIDOS ESTÁN BIEN, Intentamos la actualización
             try {
-                Ingrediente newIngrediente = ingredienteService.findById(ingrediente.getId()).orElse(null);
+                Usuario newUsuario = usuarioService.findById(usuario.getId()).orElse(null);
 
-                if (newIngrediente == null) {
+                if (newUsuario == null) {
                     // El registro no se ha encontrado
                     responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 } else {
                     // El registro EXISTE y hacemos la actualización
-                    responseAsMap.put("body", ingredienteService.save(ingrediente));
+                    responseAsMap.put("body", usuarioService.save(usuario));
                     responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
                 }
             } catch (DataAccessException e) {
@@ -165,30 +167,26 @@ public class IngredienteController {
         return responseEntity;
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteIngrediente(@PathVariable(name = "id") long idIngrediente) {
+    public ResponseEntity<String> deleteUsuario(@PathVariable(name = "id") long idUsuario) {
         ResponseEntity<String> responseEntity = null; // Variable a devolver con el STATUS
 
         // Buscamos el producto referido para su borrado
-        Ingrediente ingredienteToDelete = ingredienteService.findById(idIngrediente).orElseGet(null);
+        Usuario usuarioToDelete = usuarioService.findById(idUsuario).orElseGet(null);
 
         // Pueden ocurrir dos (2) cosas ¡... el registro exista o NO exista.
-        if (ingredienteToDelete == null) {
+        if (usuarioToDelete == null) {
             // No existe el registro a borrar
-            responseEntity = new ResponseEntity<>(String.format("Ingredient (Ref. %d) NOT FOUND", idIngrediente),
+            responseEntity = new ResponseEntity<>(String.format("User (Ref. %d) NOT FOUND", idUsuario),
                     HttpStatus.NOT_FOUND);
         } else {
             // Si existe el registro... puede que se borre bien o que haya un error
             try {
                 // Se borra correctamente el registro
-                ingredienteService.delete(idIngrediente);
+                usuarioService.delete(idUsuario);
                 responseEntity = new ResponseEntity<>(
-                        String.format("Ingredient (Ref. %d) deleted", idIngrediente), HttpStatus.OK);
-            } catch (DataIntegrityViolationException e) {
-                // Hay un error al borrar el registro
-                // String mensaje = e.getMostSpecificCause().toString();
-                String mensaje = "This ingredient is been used. Cant' be deleted";
-                responseEntity = new ResponseEntity<>(mensaje, HttpStatus.CONFLICT);
+                        String.format("User (Ref. %d) deleted", idUsuario), HttpStatus.OK);
             } catch (DataAccessException e) {
                 // Hay un error al borrar el registro
                 String mensaje = e.getMostSpecificCause().toString();
